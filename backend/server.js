@@ -4,6 +4,13 @@ const colors = require('colors');
 const dotenv = require('dotenv').config();
 const { errorHandler } = require('./middleware/errorMiddleware');
 const dataStore = require('./dataStore');
+
+// Validate required environment variables
+if (!process.env.JWT_SECRET) {
+  console.error('❌ Error: JWT_SECRET environment variable is required'.red);
+  process.exit(1);
+}
+
 const port = process.env.PORT || 5000;
 
 // Clear data store on server start (demo behavior)
@@ -38,6 +45,7 @@ app.use(errorHandler);
 app.listen(port, () => {
   if (process.env.NODE_ENV === 'development') {
     console.log(`🚀 Server started on port ${port}`.green);
+    console.log(`🔐 JWT_SECRET loaded successfully`.green);
   } else {
     console.log(`Server started on port ${port}`);
   }

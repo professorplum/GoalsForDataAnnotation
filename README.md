@@ -57,10 +57,22 @@ cd mern-tutorial-fork-main
 ```
 
 ### 2. Environment Configuration
-Create a `.env` file in the root directory and add your JWT secret:
+Create a `.env` file in the `backend` directory and add your JWT secret:
+```bash
+cd backend
+cp .env.example .env
+```
+
+Edit the `.env` file with your configuration:
 ```env
 JWT_SECRET=your_jwt_secret_here
 NODE_ENV=development
+PORT=5000
+```
+
+⚠️ **Important**: Generate a secure JWT secret for production:
+```bash
+node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
 ```
 
 ### 3. Install Dependencies
