@@ -14,8 +14,11 @@ export const createGoal = createAsyncThunk(
   'goals/create',
   async (goalData, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user.token
-      return await goalService.createGoal(goalData, token)
+      const user = thunkAPI.getState().auth.user
+      if (!user?.token) {
+        return thunkAPI.rejectWithValue('No authentication token found')
+      }
+      return await goalService.createGoal(goalData, user.token)
     } catch (error) {
       const message =
         (error.response &&
@@ -33,8 +36,11 @@ export const getGoals = createAsyncThunk(
   'goals/getAll',
   async (_, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user.token
-      return await goalService.getGoals(token)
+      const user = thunkAPI.getState().auth.user
+      if (!user?.token) {
+        return thunkAPI.rejectWithValue('No authentication token found')
+      }
+      return await goalService.getGoals(user.token)
     } catch (error) {
       const message =
         (error.response &&
@@ -52,8 +58,11 @@ export const deleteGoal = createAsyncThunk(
   'goals/delete',
   async (id, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user.token
-      return await goalService.deleteGoal(id, token)
+      const user = thunkAPI.getState().auth.user
+      if (!user?.token) {
+        return thunkAPI.rejectWithValue('No authentication token found')
+      }
+      return await goalService.deleteGoal(id, user.token)
     } catch (error) {
       const message =
         (error.response &&
@@ -107,7 +116,7 @@ export const goalSlice = createSlice({
         state.isLoading = false
         state.isSuccess = true
         state.goals = state.goals.filter(
-          (goal) => goal._id !== action.payload.id
+          (goal) => goal._id !== action.meta.arg
         )
       })
       .addCase(deleteGoal.rejected, (state, action) => {

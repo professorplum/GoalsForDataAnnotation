@@ -29,11 +29,17 @@ function Register() {
     }
 
     if (isSuccess || user) {
-      navigate('/')
+      navigate('/dashboard')
     }
-
-    dispatch(reset())
   }, [user, isError, isSuccess, message, navigate, dispatch])
+
+  useEffect(() => {
+    return () => {
+      if (isError) {
+        dispatch(reset())
+      }
+    }
+  }, [isError, dispatch])
 
   const onChange = (e) => {
     setFormData((prevState) => ({

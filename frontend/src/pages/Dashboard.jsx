@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
+import { toast } from 'react-toastify'
 import GoalForm from '../components/GoalForm'
 import GoalItem from '../components/GoalItem'
 import Spinner from '../components/Spinner'
@@ -15,22 +16,20 @@ function Dashboard() {
     (state) => state.goals
   )
 
-  useEffect(() => {
+    useEffect(() => {
     if (!user) {
       navigate('/login')
       return
     }
 
-    dispatch(getGoals())
-
-    return () => {
-      dispatch(reset())
+    if (user.token) {
+      dispatch(getGoals())
     }
   }, [user, navigate, dispatch])
 
   useEffect(() => {
     if (isError) {
-      console.log(message)
+      toast.error(message)
     }
   }, [isError, message])
 

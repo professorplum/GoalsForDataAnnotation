@@ -11,13 +11,13 @@ function Header() {
   const onLogout = () => {
     dispatch(logout())
     dispatch(reset())
-    navigate('/')
+    navigate('/login')
   }
 
   return (
     <header className='header'>
       <div className='logo'>
-        <Link to='/'>GoalSetter</Link>
+        <Link to={user ? '/dashboard' : '/'}>GoalSetter</Link>
       </div>
       <ul>
         {user ? (
